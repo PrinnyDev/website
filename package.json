@@ -1,0 +1,11 @@
+{
+	"name": "PrinnyDev.com",
+	"version": "0.0.1",
+	"private": "true",
+	"dependencies": {
+		"express": "~4.13.3",
+		"jade": "~1.11.0",
+		"stylus": "~0.52.4",
+		"nib": "~1.1.0"
+	}
+}
