@@ -1,0 +1,54 @@
+nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+	div.container-fluid
+		div.navbar-header
+			button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbarLinks')
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+			a.navbar-brand(href='/') Logo
+		div#navbarLinks.collapse.navbar-collapse
+			ul.nav.navbar-nav
+				li
+					a.navbar-link(href='#')
+						i.fa.fa-cubes
+						|	
+						span Anime
+				li
+					a.navbar-link(href='#')
+						i.fa.fa-ticket
+						|	
+						span APIs
+				li
+					a.navbar-link(href='#')
+						i.fa.fa-user
+						|	
+						span Blog
+				li
+					a.navbar-link(href='/profile')
+						i.fa.fa-comment
+						|	
+						span Profile
+				if (globalErrorMessage && globalErrorMessage.length)
+					li.dropdown
+						a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+							i.fa.fa-warning
+							|	
+							span Error!
+						div.dropdown-menu
+							div.container-fluid.custom-dropdown-menu
+								div.alert.alert-danger=globalErrorMessage
+			ul.nav.navbar-nav.navbar-right
+				li.dropdown
+					a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+						i.fa.fa-sign-in
+						|	
+						span Log in
+					div.dropdown-menu
+						include ./login.jade
+				li.dropdown
+					a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+						i.fa.fa-user-plus
+						|	
+						span Register
+					div.dropdown-menu
+						include ./register.jade

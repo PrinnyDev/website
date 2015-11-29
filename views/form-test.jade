@@ -1,0 +1,23 @@
+extends layout
+
+block content
+	div.container
+		div.row
+			div.col-xs-3
+			div.col-xs-6.custom-form
+				h3.text-center Login
+				div.custom-144-circle-img
+				form
+					div.row
+						div.col-xs-12
+							div.form-group
+									label.control-label(for='username') Username
+									a.pull-right Request account
+									input.form-control(type='text', id='username')
+					div.row
+						div.col-xs-12
+							div.form-group
+								label.control-label(for='password') Password
+								a.pull-right Forgot password?
+								input.form-control(type='password', id='password')
+			div.col-xs-3
