@@ -1,32 +1,28 @@
 extends layout
 
 block content
-
-	div.container
-		div.row
-			div.col-xs-6
-				div.well
-					h3
-						i.fa.fa-user
-						|	
-						span=user.username
-					p
-						strong Id:
-						|	
-						span=user._id
-					p
-						strong Email:
-						|	
-						span=user.email
-					p
-						strong Password:
-						|	
-						span=user.password
-					p
-						strong Active:
-						|	
-						span=user.active
-					p
-						strong Admin:
-						|	
-						span=user.admin
+	div.well.pull-left
+		h3
+			i.fa.fa-user
+			|	
+			span Profile
+		p
+			strong Id:
+			|	
+			span=user._id
+		p
+			strong Email:
+			|	
+			span=user.email
+		p
+			strong Password:
+			|	
+			span=user.password
+		p
+			strong Active:
+			|	
+			span=user.active
+		p
+			strong Admin:
+			|	
+			span=user.admin

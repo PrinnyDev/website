@@ -24,42 +24,47 @@ module.exports = function(passport){
 					return done(err);
 				}
 				else {
+					// if user with that email already exists
 					if (user) {
-						return done(null, false, req.flash('globalErrorMessage', 'That email is already taken.'));
+						return done(null, false, req.flash('globalErrorMessage', 'Account already exists with that email.'));
 					}
-					else if (password != req.body.passwordConfirm) {
+					// if passwords do not match
+					if (password != req.body.passwordConfirm) {
 						return done(null, false, req.flash('globalErrorMessage', 'Your passwords do not match.'));
 					}
-					else {
-						var newUser = new User();
-
-						newUser.username = email.split('@')[0];
-						newUser.password = newUser.generateHash(password);
-						newUser.email = email;
-						newUser.active = false;
-						newUser.admin = false;
-
-						newUser.save(function(err){
-							if (err) {
-								throw err;
-							}
-							else {
-								return done(null, newUser);
-							}
-						});
+					// if email is invalid (must be: somename@somedomain.com/net/org/etc...)
+					var validEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+					if (!validEmail.test(email)) {
+						return done(null, false, req.flash('globalErrorMessage', 'Invalid email.'));
 					}
+					// add user to database
+					var newUser = new User();
+
+					newUser.email = email;
+					newUser.password = newUser.generateHash(password);
+					newUser.active = false;
+					newUser.admin = false;
+
+					newUser.save(function(err){
+						if (err) {
+							throw err;
+						}
+						else {
+							return done(null, newUser);
+						}
+					});
 				}
 			})
 		})
 	}));
 
 	passport.use('local-login', new LocalStrategy({
-		usernameField: 'username',
+		usernameField: 'email',
 		passwordField: 'password',
 		passReqToCallback: true
 	}
-	,function(req, username, password, done){
-		User.findOne({'username': username}, function(err, user){
+	,function(req, email, password, done){
+		User.findOne({'email': email}, function(err, user){
 			if (err) {
 				return done(err);
 			}
@@ -70,6 +75,10 @@ module.exports = function(passport){
 
 			if (!user.validPassword(password)) {
 				return done(null, false, req.flash('globalErrorMessage', 'Password incorrect.'));
+			}
+
+			if (!user.active) {
+				return done(null, false, req.flash('globalErrorMessage', 'User inactive.'));
 			}
 
 			return done(null, user);

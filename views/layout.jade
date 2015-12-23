@@ -6,8 +6,15 @@ html
 		link(rel='shortcut icon', href='/images/favicon.ico', type='image/x-icon')
 		link(rel='stylesheet', href='/plugins/bootstrap-3.3.6/css/bootstrap.min.css')
 		link(rel='stylesheet', href='/plugins/font-awesome-4.5.0/css/font-awesome.min.css')
+		link(rel='stylesheet', href='/plugins/select2-4.0.1/css/select2.min.css')
+		block stylesheets
 	body.custom-body
 		include ./navbar.jade
-		block content
+		if globalErrorMessage && globalErrorMessage.length > 0
+			div.alert.alert-danger=globalErrorMessage
+		div.container
+			block content
 	script(src='/plugins/jquery-2.1.4/jquery-2.1.4.min.js')
 	script(src='/plugins/bootstrap-3.3.6/js/bootstrap.min.js')
+	script(src='/plugins/select2-4.0.1/js/select2.min.js')
+	block javascripts

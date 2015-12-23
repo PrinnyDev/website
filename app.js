@@ -12,13 +12,15 @@ var session = require('express-session')
 var mongoose = require('mongoose');
 var passport = require('passport');
 
-var routes = require('./routes/index');
+var routes = require('./router/index');
 
 var app = express();
 
 var configDB = require('./config/database.js');
 
 // configuration ===============================================
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // connect to DB
 mongoose.connect(configDB.url);
@@ -37,7 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // required for passport
-app.use(session({secret: 'prinnydood', cookie: {maxAge: 60000*30}, rolling: true}));
+app.use(session({secret: 'prinnydood'/*, cookie: {maxAge: 60000*30}, rolling: true*/}));// uncomment to have login sessions expire
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash())

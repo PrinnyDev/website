@@ -1,0 +1,104 @@
+
+
+extends layout
+
+block stylesheets
+	link(rel='stylesheet', href='/stylesheets/admin/tasks/index.css')
+
+mixin table_header
+	tr
+		th Title
+		th
+			i.fa.fa-warning
+		th Tags
+		th Submitted
+		th
+		th.hidden
+		th.hidden
+
+mixin row(task)
+	tr.align-vertical(data-id=task._id, data-title=task.title, data-priority='#{task.priority}', data-tags=task.tags.join(', '), data-submitted=task.submitted, data-description=task.description, data-in-progress='#{task.in_progress}')
+		td.title= task.title
+		td.priority
+			if task.priority
+				i.fa.fa-warning
+		td.tags
+			each tag in task.tags
+				span.tag= tag
+				|	
+		td.submitted= moment(task.submitted).format('MMM Do YYYY')
+		td
+			button.delete.btn.btn-danger.pull-right
+				i.fa.fa-trash
+		td.description.hidden= task.description
+		td.in_progress.hidden= task.in_progress
+
+block content
+	div.row
+		div.col-xs-6
+			ol.breadcrumb.filter
+				li
+					a(href='#') All
+				li
+					a(href='#') In Progress
+				li
+					a(href='#') High Priority
+				li
+					a(href='#') Complete
+	div.row
+		div.col-xs-12
+			if tasks
+				table.table
+					thead
+						+table_header
+					tbody
+						each task in tasks
+							+row(task)
+	div.row
+		div.col-xs-12
+			div.well.clearfix
+				form.form-horizontal
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label Title
+						div.col-xs-10
+							input.form-control#title
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label Description
+						div.col-xs-10
+							textarea(rows='5').form-control#description
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label Tags
+						div.col-xs-10
+							select.form-control(multiple="multiple")#tags
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label In Progress?
+						div.col-xs-10
+							label.radio-inline
+								input(type='radio', name='inProgress', value='true')
+								|	Yes
+							label.radio-inline
+								input(type='radio', name='inProgress', value='false')
+								|	No
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label High Priority?
+						div.col-xs-10
+							label.radio-inline
+								input(type='radio', name='highPriority', value='true')
+								|	Yes
+							label.radio-inline
+								input(type='radio', name='highPriority', value='false')
+								|	No
+					div
+						div.col-xs-2
+						div.col-xs-10(style='padding-left: 3px')
+							button.btn.btn-primary.pull-left(type='submit')
+								i.fa.fa-save
+								|	Save
+
+block javascripts
+	script(src='/javascripts/admin/tasks/index.js')

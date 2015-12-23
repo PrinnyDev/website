@@ -1,5 +1,5 @@
 nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
-	div.container-fluid
+	div.container
 		div.navbar-header
 			button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbarLinks')
 				span.icon-bar
@@ -7,48 +7,57 @@ nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
 				span.icon-bar
 			a.navbar-brand(href='/') Logo
 		div#navbarLinks.collapse.navbar-collapse
-			ul.nav.navbar-nav
-				li
-					a.navbar-link(href='#')
-						i.fa.fa-cubes
-						|	
-						span Anime
-				li
-					a.navbar-link(href='#')
-						i.fa.fa-ticket
-						|	
-						span APIs
-				li
-					a.navbar-link(href='#')
-						i.fa.fa-user
-						|	
-						span Blog
-				li
-					a.navbar-link(href='/profile')
-						i.fa.fa-comment
-						|	
-						span Profile
-				if (globalErrorMessage && globalErrorMessage.length)
+			if user
+				ul.nav.navbar-nav.navbar-left
+					li
+						a.navbar-link(href='#')
+							i.fa.fa-film
+							|	
+							span Anime
+					li
+						a.navbar-link(href='#')
+							i.fa.fa-cubes
+							|	
+							span APIs
+					li
+						a.navbar-link(href='#')
+							i.fa.fa-comment
+							|	
+							span Blog
+					if user.admin
+						li.dropdown
+							a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+								i.fa.fa-dashboard
+								|	
+								span Admin
+							ul.dropdown-menu
+								li
+									a(href='/admin/tasks') Tasks
+								li
+									a(href='/admin/tasks') Manage Users
+				ul.nav.navbar-nav.navbar-right
+					li
+						a.navbar-link(href='/profile')
+							span Hi, #{user.email}!
+					li
+						a.navbar-link(href='/logout')
+							i.fa.fa-sign-out
+							|	
+							span Log out
+
+			unless user
+				ul.nav.navbar-nav.navbar-right
 					li.dropdown
 						a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-							i.fa.fa-warning
+							i.fa.fa-sign-in
 							|	
-							span Error!
+							span Log in
 						div.dropdown-menu
-							div.container-fluid.custom-dropdown-menu
-								div.alert.alert-danger=globalErrorMessage
-			ul.nav.navbar-nav.navbar-right
-				li.dropdown
-					a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-						i.fa.fa-sign-in
-						|	
-						span Log in
-					div.dropdown-menu
-						include ./login.jade
-				li.dropdown
-					a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-						i.fa.fa-user-plus
-						|	
-						span Register
-					div.dropdown-menu
-						include ./register.jade
+							include ./login.jade
+					li.dropdown
+						a.navbar-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+							i.fa.fa-user-plus
+							|	
+							span Register
+						div.dropdown-menu
+							include ./register.jade
