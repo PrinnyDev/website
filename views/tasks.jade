@@ -4,34 +4,35 @@ extends layout
 
 block stylesheets
 	link(rel='stylesheet', href='/stylesheets/admin/tasks/index.css')
+	link(rel='stylesheet', href='/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')
 
 mixin table_header
 	tr
-		th Title
 		th
 			i.fa.fa-warning
-		th Tags
+		th Title
 		th Submitted
+		th Completed
 		th
-		th.hidden
-		th.hidden
 
 mixin row(task)
-	tr.align-vertical(data-id=task._id, data-title=task.title, data-priority='#{task.priority}', data-tags=task.tags.join(', '), data-submitted=task.submitted, data-description=task.description, data-in-progress='#{task.in_progress}')
-		td.title= task.title
-		td.priority
+	-
+		var custom_attributes = {};
+		for (var key in task) {
+			if (task.hasOwnProperty(key)) {
+				custom_attributes['data-' + key] = task[key].toString();
+			}
+		}
+	tr.align-vertical&attributes(custom_attributes)
+		td.priority(width='5%')
 			if task.priority
 				i.fa.fa-warning
-		td.tags
-			each tag in task.tags
-				span.tag= tag
-				|	
-		td.submitted= moment(task.submitted).format('MMM Do YYYY')
-		td
+		td.title= task.title
+		td.submitted(width='15%')= moment(task.submitted).format('MMM Do YYYY')
+		td.completed(width='15%')= task.completed ? moment(task.completed).format('MMM Do YYYY') : 'Not Complete'
+		td(width='5%')
 			button.delete.btn.btn-danger.pull-right
 				i.fa.fa-trash
-		td.description.hidden= task.description
-		td.in_progress.hidden= task.in_progress
 
 block content
 	div.row
@@ -57,41 +58,51 @@ block content
 	div.row
 		div.col-xs-12
 			div.well.clearfix
-				form.form-horizontal
+				form.form-horizontal(id='taskForm')
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label Id
+						div.col-xs-10
+							input#id.form-control(name='id', disabled)
 					div.form-group
 						div.col-xs-2
 							label.pull-right.control-label Title
 						div.col-xs-10
-							input.form-control#title
+							input#title.form-control(name='title')
 					div.form-group
 						div.col-xs-2
 							label.pull-right.control-label Description
 						div.col-xs-10
-							textarea(rows='5').form-control#description
+							textarea#description.form-control(name='description', rows='5')
 					div.form-group
 						div.col-xs-2
 							label.pull-right.control-label Tags
 						div.col-xs-10
-							select.form-control(multiple="multiple")#tags
+							select#tags.form-control(name='tags', multiple="multiple")
 					div.form-group
 						div.col-xs-2
 							label.pull-right.control-label In Progress?
 						div.col-xs-10
 							label.radio-inline
-								input(type='radio', name='inProgress', value='true')
+								input(type='radio', name='in_progress', value='true')
 								|	Yes
 							label.radio-inline
-								input(type='radio', name='inProgress', value='false')
+								input(type='radio', name='in_progress', value='false')
 								|	No
+					div.form-group
+						div.col-xs-2
+							label.pull-right.control-label Complete?
+						div.col-xs-10
+							input#complete.form-control(type='text')
 					div.form-group
 						div.col-xs-2
 							label.pull-right.control-label High Priority?
 						div.col-xs-10
 							label.radio-inline
-								input(type='radio', name='highPriority', value='true')
+								input(type='radio', name='priority', value='true')
 								|	Yes
 							label.radio-inline
-								input(type='radio', name='highPriority', value='false')
+								input(type='radio', name='priority', value='false')
 								|	No
 					div
 						div.col-xs-2
@@ -102,3 +113,5 @@ block content
 
 block javascripts
 	script(src='/javascripts/admin/tasks/index.js')
+	script(src='/plugins/moment/moment.min.js')
+	script(src='/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')

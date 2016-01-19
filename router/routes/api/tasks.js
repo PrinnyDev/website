@@ -55,9 +55,12 @@ router.route('/:id')
 				res.send(error);
 			}
 
-			for (var attribute in req.body) {
-				task[attribute] = req.body[attribute];
-			}
+			task.title = req.body.title;
+			task.description = req.body.description;
+			task.tags = req.body.tags;
+			task.completed = req.body.completed;
+			task.in_progress = req.body.in_progress;
+			task.priority = req.body.priority;
 
 			task.save(function(err) {
 				if (err) {
